@@ -252,6 +252,44 @@ def task_wordpress_branch():
 def task_wordpress_push():
     return common_push('wordpress')
 
+### Magneto 2 CE ###
+
+def task_magento2ce():
+    return {
+        'task_dep': ['magento2ce_update', 'magento2ce_platformify', 'magento2ce_branch',],
+        'actions': []
+    }
+
+def task_magento2ce_init():
+    return {
+        'task_dep': ['magento2ce_cleanup'],
+        'actions': [
+            'git clone git@github.com:platformsh/template-magento2ce.git magento2ce/template',
+            'cd magento2ce/template && git remote add project https://github.com/johnpbloch/wordpress.git'
+        ]
+    }
+
+def task_magento2ce_platformify():
+    # @TODO Still need to port over more composer changes. What's the best way to modify composer.json
+    # from here?
+    return {
+        'actions': [
+            'rsync -aP magento2ce/files/ magento2ce/template/',
+        ]
+    }
+
+def task_magento2ce_cleanup():
+    return common_cleanup('magento2ce')
+
+def task_magento2ce_update():
+    return common_update('magento2ce', '2.2.2')
+
+def task_magento2ce_branch():
+    return common_branch('magento2ce')
+
+def task_magento2ce_push():
+    return common_push('magento2ce')
+
 
 
 ### Common command templates ###
